@@ -1,0 +1,38 @@
+<div>
+    <img class="headerImage" src="uploads/001header.png" alt="David Cozzi face on yellow background" />
+    <h1 class="postTitle">Blogging From Scratch, How I Made The Cozzi Corner</h1>
+    <h2 class="postSubtitle">Sometimes taking the scenic route is easier</h2>
+    <div class="postBody">
+        <span>
+            While preparing for the launch of &#1046; COZZI, I found myself wanting a place where I could write about my developer journey. 
+            There are countless options to chose from. Everyone recommends the overly robust and complicated Wordpress, while some prefer the minimalistic Ghost.
+            These options, while appropriate for their own use cases felt overwhelming for such simple blog. Inspired by the minimalistic, out of the way 
+            design of Seth Godin's blog, I knew that I wanted something similar, however, none of the major platforms seem to offer themes in this style and performance.
+            If I wanted it, I would have to build it, and even if it fails, I could blog about the experience, so here I am.
+        </span>
+        <br />
+        <p>
+            From my years of prior Wordpress experience, I knew that fundamentally there are two classes of data in a blog: images and text. Images, obviously,
+            are significant in size, but text blocks are not. As a result, I could put all of my posts into a single JSON file - blog.json, with the images seperated into
+            an uploads folder. This would make the feed rather performant as the single file would be cached between pages and the initial page load would not be
+            burdened by the loading of images on the first paint. 
+        </p>
+        <p>
+            At first, I structured the JSON file with the blog components: title, subtitle, body, and publication date.
+            While easy to parse, display, and maintain, it was extremely rigid and plain. If I wanted to have a blogging platform that adapted to my needs, I would have to
+            allow the platform to spread its wings. I decided on having full HTML support inside of posts, with a small set of primitives to keep the blogs consistent.
+            The "platform" would then simply display the HTML as it was written to the JSON file. There's one catch: HTML's syntax is incompatible with JSON with its use of
+            quotations. I will admit, its a crutch, any time I run into these problems I instantly turn to Base64 encoding. Before inserting into the JSON file, I encode
+            by posts, preserving the post's struture without modification. Additionally, since I have "full" HTML, I can add awesome WebXR experiences directly into the posts!
+            The last feature I needed was search. Using Fuse.js was easy, and pretty performant for the dataset. While I only get title based search due to the encoding of the posts,
+            it is sufficient for users to find articles easily and quickly.
+        </p>
+        <p>
+            Overall, while it may have taken an extra hour (if that) to make my own blog from scratch, it was definitely worth it. I look forward to regularly updating this site
+            with future developments as I continue to create the future of web-based hyperreality. If you're interested in keeping up with my developments, add a bookmark. It would be greatly appreciated.
+        </p>
+        <p>
+            P.S. If you want to review how this site works in depth, I decided to keep the code unminified for your interest.
+        </p>
+    </div>
+</div>

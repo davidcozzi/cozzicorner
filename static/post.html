@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1" />
+        <title>Cozzi Corner</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+    </head>
+    <div id="banner">
+        <span><span id="zhe">&#1046;</span>COZZI IS LIVE! VISIT <a id="now" href="https://cozzi.io">NOW</a></span>
+    </div>
+    <header>
+        <div id="logo" onclick="goBack()">
+            <img src="uploads/greyhead.png" id="greyHead" alt="The Face of David R Cozzi II"/>
+            <div id="nameStacked">
+                <h2>Cozzi</h2>
+                <h2>Corner</h2>
+            </div>
+        </div>
+    </header>
+    <br />
+    <div id="centered">
+        <div id="post">
+            <input  class="backButton" action="action" onclick="goBack()" type="submit" value="&#x2190;" />
+        </div>
+    </div>
+
+    <script>
+        const post = document.getElementById("post");
+        fetch("./blog.json")
+        .then(function(response) { return response.json(); })
+        .then(function(json) {
+            let params = new URLSearchParams(document.location.search);
+            let title = params.get("title");
+            title = title.replace(/-/g, ' ');
+
+            let result = json.filter(obj => {
+                return obj.title === title
+            })
+
+            addPost(result[0]);
+        });
+
+        function addPost(result){
+            let item = document.createElement("div");
+
+            let body = document.createElement("p");
+            body.innerHTML = atob(result.body);
+            item.appendChild(body);
+
+            post.appendChild(item);
+        }
+
+
+        function goBack(){
+            if (document.referrer == "") {
+                location.href = "/";
+            } else {
+                window.history.go(-1);
+            }
+        }
+    </script>
+</html>

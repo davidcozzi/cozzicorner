@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1" />
+        <title>Cozzi Corner</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+
+        <link rel="apple-touch-icon" sizes="57x57" href="/icons/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/icons/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/icons/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/icons/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/icons/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/icons/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192"  href="/icons/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+        <link rel="manifest" href="/manifest.json">
+        <meta name="msapplication-TileColor" content="#ffe600">
+        <meta name="msapplication-TileImage" content="/icons/ms-icon-144x144.png">
+        <meta name="theme-color" content="#ffe600">
+    </head>
+    <div id="banner">
+        <span><span id="zhe">&#1046;</span>COZZI IS LIVE! VISIT <a id="now" href="https://cozzi.io">NOW</a></span>
+    </div>
+    <header>
+        <div id="logo" href="/">
+            <img src="uploads/greyhead.png" id="greyHead" alt="The Face of David R Cozzi II"/>
+            <div id="nameStacked">
+                <h2>Cozzi</h2>
+                <h2>Corner</h2>
+            </div>
+        </div>
+        <div id="searchBar">
+            <input id="searchInput" type="text" oninput="updateFeed()" placeholder="Discover..."/>
+        </div>
+    </header>
+
+    <div id="centered">
+        <div id="feed">   
+        </div>
+    </div>
+
+    <script>
+        let list = '';
+        let fuse = '';
+        const feed = document.getElementById("feed");
+
+        const fuseOptions = {
+            keys: [
+                "title",
+                "subtitle"
+            ]
+        };
+
+        fetch("./blog.json")
+        .then(function(response) { return response.json(); })
+        .then(function(json) {
+            list = json;
+            //console.log("Pre Search: " + json);
+            fuse = new Fuse(list, fuseOptions);
+            updateFeed()
+        });
+
+        function updateFeed() {
+            feed.innerHTML = '';
+
+            let searchPattern = document.getElementById("searchInput").value;
+            if(searchPattern != ''){
+                let results = fuse.search(searchPattern);
+
+                if(results.toString == '0'){
+                    results = list;
+                }
+                
+                for (let result of results){
+                    addItem(result.item);
+                }
+            } else {
+                for (let result of list){
+                    addItem(result);
+                }
+            }
+        }
+
+        function addItem(result){
+            let item = document.createElement("a");
+            item.className = "item";
+            let pubDate = new Date(1708500237607);
+            let shownDate = pubDate.getFullYear() + "/" + pubDate.getMonth() + "/" + pubDate.getDate();
+            let safeTitle = result.title.replace(/\s+/g, '-');
+            item.href = "/post.html?title=" + safeTitle;
+
+            let body = document.createElement("p");
+            body.innerHTML = atob(result.body);
+            item.appendChild(body);
+
+            feed.appendChild(item);
+        }
+    </script>
+</html>
